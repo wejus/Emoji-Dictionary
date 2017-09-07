@@ -13,6 +13,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     @IBOutlet weak var EmojiTable: UITableView!
     
     var emojis = ["😎","😄","💩","😄","👠","🐹","🐬"]
+    var emojiDescriptions = ["Sunglasses","Big Smile","Poop","Big Smile","Shoe","Hamster","Dolphin"]
     
     
     override func viewDidLoad() {
@@ -36,7 +37,20 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         cell.textLabel?.text = emojis[indexPath.row]
         return cell
     }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+        let emoji = indexPath.row
+        performSegue(withIdentifier: "moveSegue", sender: emoji)
+    }
 
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        let defVC = segue.destination as! DefinitionViewController
+        let myIndex = sender as! Int
+        defVC.emoji = emojis[myIndex]
+        defVC.emojiName = emojiDescriptions[myIndex]
+    }
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
